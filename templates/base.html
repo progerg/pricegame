@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>Pricegame</title>
+
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/product/">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- Bootstrap core CSS -->
+
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Viga&display=swap');
+    </style>
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      @mixin gradient-radial($inner-color: $gray-700, $outer-color: $gray-800) {
+      background-image: radial-gradient(circle, $inner-color, $outer-color);
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="static/css/product.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="site-header sticky-top py-1">
+  <div class="container d-flex flex-column flex-md-row justify-content-between">
+    <a class="py-2" href="/" aria-label="Product">
+    <img src="static/img/logo.png" alt="">
+    </a>
+    <div class="menu">
+      <a class="py-2 d-none d-md-inline-block" href="/">MAIN</a>
+      <a class="py-2 d-none d-md-inline-block" href="/games">GAMES</a>
+      <a class="py-2 d-none d-md-inline-block" href="#">ABOUT</a>
+      <a class="py-2 d-none d-md-inline-block" href="#">BLOG</a>
+      {% if current_user.is_authenticated %}
+        <a class="py-2 d-none d-md-inline-block" href="/profile">PROFILE</a>
+        <a class="py-2 d-none d-md-inline-block" href="/logout">LOGOUT</a>
+      {% else %}
+        <a class="py-2 d-none d-md-inline-block" href="/register">SIGNUP</a>
+        <a class="py-2 d-none d-md-inline-block" href="/login">LOGIN</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+    {% for msg in get_flashed_messages() %}
+    <div class="alert alert-danger" role="alert">
+        {{ msg }}
+    </div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+<footer class="container py-5">
+  <div class="row">
+    <div class="col-12 col-md">
+      <img src="static/img/Vector.svg" alt="logo">
+      <small class="d-block mb-3 text-muted">&copy; 2017-2020</small>
+    </div>
+    <div class="col-6 col-md">
+      <h5>Top Games</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="text-muted" href="#">Recommended</a></li>
+        <li><a class="text-muted" href="#">Best plot</a></li>
+        <li><a class="text-muted" href="#">Best graphics</a></li>
+        <li><a class="text-muted" href="#">Best Studios</a></li>
+      </ul>
+    </div>
+    <div class="col-6 col-md">
+      <h5>For developers</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="text-muted" href="#">Promotion</a></li>
+        <li><a class="text-muted" href="#">Accommodation</a></li>
+        <li><a class="text-muted" href="#">Prices</a></li>
+        <li><a class="text-muted" href="#">Contacts</a></li>
+      </ul>
+    </div>
+    <div class="col-6 col-md">
+      <h5>Blog</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="text-muted" href="#">News</a></li>
+        <li><a class="text-muted" href="#">New features</a></li>
+        <li><a class="text-muted" href="#">Reviews</a></li>
+      </ul>
+    </div>
+    <div class="col-6 col-md">
+      <h5>About</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="text-muted" href="#">Team</a></li>
+        <li><a class="text-muted" href="#">Privacy</a></li>
+        <li><a class="text-muted" href="#">Terms</a></li>
+      </ul>
+    </div>
+    <div class="col-6 col-md">
+      <h5>Menu</h5>
+      <ul class="list-unstyled text-small">
+        <li><a class="text-muted" href="/games">Games</a></li>
+        <li><a class="text-muted" href="#">Blog</a></li>
+        <li><a class="text-muted" href="#">Profile</a></li>
+        <li><a class="text-muted" href="#">About</a></li>
+        <li><a class="text-muted" href="/">Main</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+  </body>
+</html>

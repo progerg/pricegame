@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<hr>
+<div class="text-center text-white">
+    <form method="POST" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-sm-3"><!--left col-->
+            <div class="text-center">
+                <div class=""><img src="{{ url_for('user_avatar', id=current_user.id) }}" class="rounded-circle img-thumbnail" style="object-fit: cover;
+             width:200px; height: 200px"></div>
+            </div></hr><br>
+                        <p>
+                    {{ form.avatar.label(class="text-white") }}<br>
+                    {{ form.avatar(class="mx-auto col-sm-10 form-control") }}<br>
+                    {% for error in form.avatar.errors %}
+                        <p class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                    </p>
+        </div>
+        <div class="col-sm-9 ">
+            <h1 class="text-center text-white">Profile Edit</h1>
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.email.label(class="text-white") }}<br>
+                    {{ form.email(class="mx-auto col-sm-6 form-control", type="email") }}<br>
+                    {% for error in form.email.errors %}
+                        <p class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.old_password.label(class="text-white") }}<br>
+                    {{ form.old_password(class="mx-auto col-sm-6 form-control", type="password") }}<br>
+                    {% for error in form.old_password.errors %}
+                        <p class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.new_password.label(class="text-white") }}<br>
+                    {{ form.new_password(class="mx-auto col-sm-6 form-control", type="password") }}<br>
+                    {% for error in form.new_password.errors %}
+                        <p class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.name.label(class="text-white") }}<br>
+                    {{ form.name(class="mx-auto col-sm-6 form-control") }}<br>
+                    {% for error in form.name.errors %}
+                        <p class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </p>
+                <p>
+                    {{ form.age.label(class="text-white") }}<br>
+                    {{ form.age(class="mx-auto col-sm-6 form-control", rows="1") }}<br>
+                    {% for error in form.age.errors %}
+                        <p class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </p>
+                    {% endfor %}
+                </p>
+                <p>{{ form.submit(type="submit", class="mx-auto btn btn-primary") }}</p>
+                {{message}}
+
+        </div>
+
+    </div>
+    </form>
+</div>
+
+</div><!--/col-9-->
+</div><!--/row-->
+{% endblock %}

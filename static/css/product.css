@@ -1,0 +1,167 @@
+.container {
+  max-width: 960px;
+}
+
+body {
+  /* fallback for old browsers */
+  background: #fff;
+
+  background: linear-gradient(145deg, rgba(0, 0, 0, 0.96), rgba(0, 0, 0, 0.92))
+}
+
+.glyphicon {  margin-bottom: 10px;margin-right: 10px;}
+
+small {
+    display: block;
+    line-height: 1.428571429;
+    color: #999;
+}
+/*
+ * Custom translucent site header
+ */
+
+p {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.keyboard {
+  margin-top: 300px;
+  margin-right: 120px; 
+}
+
+.menu {
+  margin-top: 14px;
+  word-spacing: 40px;
+  font-family: Viga;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 27px;
+} 
+
+.form__group {
+  margin-top: 80px
+}
+
+.form__label {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.2rem;
+  margin-left: 2rem;
+  margin-top: 0.7rem;
+  display: block;
+  transition: all 0.3s;
+  transform: translateY(0rem);
+}
+
+.form__input {
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  font-size: 3rem;
+  margin: 0 auto;
+  padding: 1.5rem 2rem;
+  border-radius: 2rem;
+  background-color: rgb(255, 255, 255);
+  border: none;
+  width: 90%;
+  display: block;
+  border-bottom: 0.3rem;
+  transition: all 0.3s;
+}
+
+.form__input:placeholder-shown + .form__label {
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transform: translateY(-4rem);
+  transform: translateY(-4rem);
+}
+
+
+.lead {
+  margin-top: 40px;
+  font-family: 'Black Han Sans', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  font-size: 90px;
+}
+
+
+.site-header {
+  background-color: rgba(0, 0, 0, .85);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+.site-header a {
+  color: #999;
+  transition: ease-in-out color .15s;
+}
+.site-header a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+/*
+ * Dummy devices (replace them with your own or something else entirely!)
+ */
+
+.product-device {
+  position: absolute;
+  right: 10%;
+  bottom: -30%;
+  width: 300px;
+  height: 540px;
+  background-color: #333;
+  border-radius: 21px;
+  -webkit-transform: rotate(30deg);
+  transform: rotate(30deg);
+}
+
+.product-device::before {
+  position: absolute;
+  top: 10%;
+  right: 10px;
+  bottom: 10%;
+  left: 10px;
+  content: "";
+  background-color: rgba(255, 255, 255, .1);
+  border-radius: 5px;
+}
+
+.product-device-2 {
+  top: -25%;
+  right: auto;
+  bottom: 0;
+  left: 5%;
+  background-color: #e5e5e5;
+}
+
+.password {
+  border-radius: 20px;
+  width: 40px;
+}
+
+.login {
+  margin-left: auto;
+  margin-right: auto;
+}
+/*
+ * Extra utilities
+ */
+
+.flex-equal > * {
+  -ms-flex: 1;
+  flex: 1;
+}
+@media (min-width: 768px) {
+  .flex-md-equal > * {
+    -ms-flex: 1;
+    flex: 1;
+  }
+}
+
+.overflow-hidden { overflow: hidden; }
+
+a:hover {
+    background-color: rgba(0,0,0,.3);
+}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<hr>
+<div class="text-center text-white">
+    <div class="row">
+        <div class="col-sm-3"><!--left col-->
+            <div class="text-center">
+                <div class=""><img src="{{ url_for('user_avatar', id=current_user.id) }}" class="rounded-circle img-thumbnail"
+                                   style="object-fit: cover;width:200px; height: 200px"></div>
+            </div>
+            </hr><br>
+        </div>
+        <div class="col-sm-9 text-left">
+            <a class="btn btn-primary" href="/profile_edit" role="button">EDIT PROFILE</a>
+            <h2 style="padding: 10px">Following games</h2>
+            {% for game in games %}
+            <div class="col-sm-2 text-center">
+                <p style="padding: 10px"><img src="{{ game.image }}" style="width: 180px; height: 250px"/>
+                <a>{{ game.name  }}</a></p>
+                <a class="btn btn-danger" href="/unfollow/{{ game.id }}" role="button">UNFOLLOW</a>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}

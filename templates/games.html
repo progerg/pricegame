@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex">
+<div class="d-inline p-2" style="width: 80%">
+    {% for game in games %}
+    <div class="p-2 m-3 d-flex rounded border text-light">
+        <div class="d-inline ml-2">
+            <h3>{{ game.name }}</h3>
+            <div class="d-flex">
+                <img src="{{ game.image }}" class="rounded" height="150px">
+                <!-- Steam Price -->
+                <div class="d-inline ml-5 p-2 text-center border-right">
+                    <a class="btn btn-default text-center" href="https://store.steampowered.com/app/{{ game.appid }}">
+                        Buy at <img src="static/img/steam-logo.png" class="rounded shop-button" height="50px">
+                    </a>
+                    <h4>Price: <small>{{ game.st_price }}</small></h4>
+                </div>
+                <!-- EGS Price -->
+                <div class="d-inline p-2 text-center">
+                    <a class="btn btn-default" href="https://www.epicgames.com/store/ru/">
+                        Buy at <img src="static/img/egs-logo.png" class="rounded shop-button" height="50px">
+                    </a>
+                    <h4>Price: <small>{{ game.ep_price }}</small></h4>
+                </div>
+            </div>
+        </div>
+        <!-- Ratings -->
+        <div class="border-left">
+            <a class="btn btn-primary" href="/follow/{{ game.id }}" role="button" style="margin-left: 100px; padding: 20px">Follow</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+        <nav class="site-header position-fixed p-3 m-3 rounded" style="right: 0;width: 19%;">
+            <h3 class="text-light text-center">Filter</h3>
+            <form novalidate method="post">
+                <div class="form-check">
+                    <input type="checkbox" value="steam_games" id="steam" checked class="form-check-input">
+                    <label for="steam" class="form-check-label">Show Steam Games</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" value="egs_games" id="egs" checked class="form-check-input">
+                    <label for="egs" class="form-check-label">Show EGS Games</label>
+                </div>
+                <p class="border-bottom"></p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="up_price" name="price" value="up" checked>
+                    <label class="form-check-label" for="up_price">
+                        Price up
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" id="down_price" name="price" value="down">
+                    <label class="form-check-label" for="down_price">
+                        Price down
+                    </label>
+                </div>
+                <p class="border-bottom"></p>
+                <button type="submit" class="btn btn-primary">Sort</button>
+            </form>
+        </nav>
+</div>
+{% endblock %}

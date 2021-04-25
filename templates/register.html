@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-center text-white">Sign up</h1>
+<form action="" method="post" class="text-center">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.email.label(class="text-white") }}<br>
+        {{ form.email(class="mx-auto col-sm-2 form-control", type="email") }}<br>
+        {% for error in form.email.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.password.label(class="text-white") }}<br>
+        {{ form.password(class="mx-auto col-sm-2 form-control", type="password") }}<br>
+        {% for error in form.password.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.password_again.label(class="text-white") }}<br>
+        {{ form.password_again(class="mx-auto col-sm-2 form-control", type="password") }}<br>
+        {% for error in form.password_again.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.name.label(class="text-white") }}<br>
+        {{ form.name(class="mx-auto col-sm-2 form-control") }}<br>
+        {% for error in form.name.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.age.label(class="text-white") }}<br>
+        {{ form.age(class="mx-auto col-sm-2 form-control", rows="1") }}<br>
+        {% for error in form.age.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>{{ form.submit(type="submit", class="mx-auto btn btn-primary") }}</p>
+    {{message}}
+</form>
+{% endblock %}
