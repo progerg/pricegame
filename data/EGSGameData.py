@@ -11,8 +11,8 @@ class EGSGameData(SqlAlchemyBase, SerializerMixin):
     id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('games.ep_id'), primary_key=True,
                            autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String)
-    origPrice = sqlalchemy.Column(sqlalchemy.Integer)
-    discPrice = sqlalchemy.Column(sqlalchemy.Integer)
+    initial_price = sqlalchemy.Column(sqlalchemy.Integer)
+    final_price = sqlalchemy.Column(sqlalchemy.Integer)
     image_1 = sqlalchemy.Column(sqlalchemy.String)
     image_2 = sqlalchemy.Column(sqlalchemy.String)
     url = sqlalchemy.Column(sqlalchemy.String)

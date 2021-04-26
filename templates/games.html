@@ -35,36 +35,23 @@
                     <a class="btn btn-default" href="{{ game.egs_game.url }}">
                         Buy at <img src="{{ url_for('static', filename='img/egs-logo.png') }}" class="rounded shop-button" height="50px">
                     </a>
-                    <h4>Price: <small>{{ game.egs_game.discPrice / 100 }} руб.</small></h4>
+                    <h4>Price: <small>{{ game.egs_game.final_price / 100 }} руб.</small></h4>
                 </div>
                 {% endif %}
             </div>
         </div>
-        <!-- Ratings -->
-        <div class="border-left">
+        <!-- Follow -->
+        <div>
             <a class="btn btn-primary" href="/follow/{{ game.id }}" role="button" style="margin-left: 100px; padding: 20px">Follow</a>
-            {% if game.steam_game %}
-            {% if game.steam_game.metacritic %}
-            <a href="{{ game.steam_game.metacritic['url'] }}">Metacritic: {{ game.steam_game.metacritic['score'] }}</a>
-            {% endif %}
-            {% endif %}
         </div>
 
     </div>
     {% endfor %}
 </div>
+    <!--
         <nav class="site-header position-fixed p-3 m-3 rounded" style="right: 0;width: 19%;">
             <h3 class="text-light text-center">Filter</h3>
             <form novalidate method="post">
-                <div class="form-check">
-                    <input type="checkbox" value="steam_games" id="steam" checked class="form-check-input">
-                    <label for="steam" class="form-check-label">Show Steam Games</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" value="egs_games" id="egs" checked class="form-check-input">
-                    <label for="egs" class="form-check-label">Show EGS Games</label>
-                </div>
-                <p class="border-bottom"></p>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" id="up_price" name="price" value="up" checked>
                     <label class="form-check-label" for="up_price">
@@ -81,5 +68,6 @@
                 <button type="submit" class="btn btn-primary">Sort</button>
             </form>
         </nav>
+        -->
 </div>
 {% endblock %}

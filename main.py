@@ -1,5 +1,7 @@
 from flask_login import login_user, LoginManager, login_manager, login_required, logout_user, current_user
 from data.Game import Game
+from data.EGSGameData import EGSGameData
+from data.SteamGameData import SteamGameData
 from data.db_session import *
 from data.users import User, EditForm, RegisterForm, LoginForm
 import flask
@@ -20,22 +22,19 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/games/<int:page>', methods=['GET', 'POST'])
-def games(page: int):
+@app.route('/games')
+@app.route('/games/<int:page>')
+def games(page=1):
     games_list = db_sess.query(Game).all()
     if page <= 0:
-        redirect('127.0.0.1/games/1')
+        return redirect('/games/1')
     elif page > len(games_list) // 25 + 1:
         page = len(games_list) // 25 + 1
-        redirect(f'127.0.0.1/games/{page}')
+        return redirect(f'/games/{page}')
     try:
         games_list = games_list[25 * (page - 1):25 * page]
     except IndexError:
         games_list = games_list[25 * (page - 1):]
-    '''if 'up' == flask.request.form.get('price'):
-        games_list = db_sess.query(Game.Game).order_by(Game.Game.st_price).all()
-    else:
-        games_list = db_sess.query(Game.Game).order_by(-Game.Game.st_price).all()'''
     return render_template('games.html', games=games_list)
 
 
