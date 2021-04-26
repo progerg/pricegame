@@ -20,31 +20,36 @@
                 {% if game.steam_game %}
                 <div class="d-inline ml-5 p-2 text-center border-right">
                     <a class="btn btn-default text-center" href="https://store.steampowered.com/app/{{ game.steam_game.steam_appid }}">
-                        Buy at <img src="static/img/steam-logo.png" class="rounded shop-button" height="50px">
+                        Buy at <img src="{{ url_for('static', filename='img/steam-logo.png') }}" class="rounded shop-button" height="50px">
                     </a>
-                    <h4>Price: <small>{{ game.steam_game.final_price }}</small></h4>
+                    {% if game.steam_game.is_free == 0 %}
+                        <h4>Price: <small>{{ game.steam_game.final_price / 100 }} руб.</small></h4>
+                    {% else %}
+                        <h4>Price: <small>Free</small></h4>
+                    {% endif %}
                 </div>
                 {% endif %}
                 <!-- EGS Price -->
                 {% if game.egs_game %}
                 <div class="d-inline p-2 text-center">
                     <a class="btn btn-default" href="{{ game.egs_game.url }}">
-                        Buy at <img src="static/img/egs-logo.png" class="rounded shop-button" height="50px">
+                        Buy at <img src="{{ url_for('static', filename='img/egs-logo.png') }}" class="rounded shop-button" height="50px">
                     </a>
-                    <h4>Price: <small>{{ game.egs_game.discPrice }}</small></h4>
+                    <h4>Price: <small>{{ game.egs_game.discPrice / 100 }} руб.</small></h4>
                 </div>
                 {% endif %}
             </div>
         </div>
         <!-- Ratings -->
-        {% if game.steam_game %}
         <div class="border-left">
             <a class="btn btn-primary" href="/follow/{{ game.id }}" role="button" style="margin-left: 100px; padding: 20px">Follow</a>
+            {% if game.steam_game %}
             {% if game.steam_game.metacritic %}
             <a href="{{ game.steam_game.metacritic['url'] }}">Metacritic: {{ game.steam_game.metacritic['score'] }}</a>
             {% endif %}
+            {% endif %}
         </div>
-        {% endif %}
+
     </div>
     {% endfor %}
 </div>

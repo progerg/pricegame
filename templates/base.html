@@ -46,13 +46,13 @@
       }
     </style>
     <!-- Custom styles for this template -->
-    <link href="static/css/product.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/product.css') }}" rel="stylesheet">
   </head>
   <body>
     <nav class="site-header sticky-top py-1">
   <div class="container d-flex flex-column flex-md-row justify-content-between">
     <a class="py-2" href="/" aria-label="Product">
-    <img src="static/img/logo.png" alt="">
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="">
     </a>
     <div class="menu">
       <a class="py-2 d-none d-md-inline-block" href="/">MAIN</a>
@@ -78,7 +78,7 @@
 <footer class="container py-5">
   <div class="row">
     <div class="col-12 col-md">
-      <img src="static/img/Vector.svg" alt="logo">
+      <img src="{{ url_for('static', filename='img/Vector.svg') }}" alt="logo">
       <small class="d-block mb-3 text-muted">&copy; 2017-2020</small>
     </div>
     <div class="col-6 col-md">

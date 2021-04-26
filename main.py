@@ -4,13 +4,14 @@ from data.db_session import *
 from data.users import User, EditForm, RegisterForm, LoginForm
 import flask
 from flask import Flask, render_template, redirect, request, url_for, flash, make_response
+from os.path import dirname, join
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder=join(dirname(__file__), 'static'))
 app.config['SECRET_KEY'] = 'hello'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_message == 'Авторизуйтесь для доступа к закрытым страницам'
+login_manager.login_message = 'Авторизуйтесь для доступа к закрытым страницам'
 
 
 @app.route('/')
@@ -19,14 +20,23 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/games', methods=['GET', 'POST'])
-def games():
-    games_list = db_sess.query(Game).all()[:2]
+@app.route('/games/<int:page>', methods=['GET', 'POST'])
+def games(page: int):
+    games_list = db_sess.query(Game).all()
+    if page <= 0:
+        redirect('127.0.0.1/games/1')
+    elif page > len(games_list) // 25 + 1:
+        page = len(games_list) // 25 + 1
+        redirect(f'127.0.0.1/games/{page}')
+    try:
+        games_list = games_list[25 * (page - 1):25 * page]
+    except IndexError:
+        games_list = games_list[25 * (page - 1):]
     '''if 'up' == flask.request.form.get('price'):
         games_list = db_sess.query(Game.Game).order_by(Game.Game.st_price).all()
     else:
         games_list = db_sess.query(Game.Game).order_by(-Game.Game.st_price).all()'''
-    return flask.render_template('games.html', games=games_list)
+    return render_template('games.html', games=games_list)
 
 
 @login_required
