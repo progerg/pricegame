@@ -11,6 +11,7 @@ class Game(SqlAlchemyBase, SerializerMixin):
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     st_id = sqlalchemy.Column(sqlalchemy.Integer)
     ep_id = sqlalchemy.Column(sqlalchemy.Integer)
+    foll_profiles = sqlalchemy.Column(sqlalchemy.String)
     steam_game = orm.relationship('SteamGameData', uselist=False)
     egs_game = orm.relationship('EGSGameData', uselist=False)
 

@@ -25,7 +25,7 @@ def index():
 @app.route('/games')
 @app.route('/games/<int:page>')
 def games(page=1):
-    games_list = db_sess.query(Game).all()
+    games_list = db_sess.query(Game).filter(Game.id < 25).all()
     if page <= 0:
         return redirect('/games/1')
     elif page > len(games_list) // 25 + 1:
@@ -42,7 +42,26 @@ def games(page=1):
 @app.route('/follow/<int:id>', methods=['GET', 'POST'])
 def follow(id):
     print(id)
-    current_user.foll_games = id
+    if current_user.foll_games:
+        foll_games = current_user.foll_games.split()
+    else:
+        foll_games = []
+    print(foll_games)
+    if foll_games and str(id) not in foll_games:
+        current_user.foll_games = f'{current_user.foll_games}, {id}'
+    elif str(id) in foll_games:
+        flash('You are already following this game')
+    else:
+        current_user.foll_games = f'{id}'
+    game = db_sess.query(Game).filter(Game.id == id).first()
+    if game.foll_profiles:
+        profiles = game.foll_profiles.split()
+    else:
+        profiles = []
+    if profiles and str(current_user.id) not in profiles:
+        game.foll_profiles = f'{game.foll_profiles}, {current_user.id}'
+    else:
+        game.foll_profiles = f'{current_user.id}'
     db_sess.merge(current_user)
     db_sess.commit()
     return redirect(url_for('games'))
@@ -52,7 +71,14 @@ def follow(id):
 @app.route('/unfollow/<int:id>', methods=['GET', 'POST'])
 def unfollow(id):
     print(id)
-    current_user.foll_games = None
+    foll_games = current_user.foll_games.split(', ')
+    foll_games.remove(str(id))
+    foll_games = ', '.join(foll_games)
+    current_user.foll_games = foll_games
+    game = db_sess.query(Game).filter(Game.id == id).first()
+    profiles = game.foll_profiles.split(', ')
+    profiles.remove(str(current_user.id))
+    game.foll_profiles = ', '.join(profiles)
     db_sess.merge(current_user)
     db_sess.commit()
     return redirect(url_for('profile'))
@@ -149,8 +175,12 @@ def user_avatar(id):
 @login_required
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
-    foll_games = current_user.foll_games
-    games_list = db_sess.query(Game.Game).filter((Game.Game.id == foll_games)).all()
+    if current_user.foll_games:
+        foll_games = current_user.foll_games.split(', ')
+        foll_games = list(map(lambda x: int(x), foll_games))
+        games_list = db_sess.query(Game).filter(Game.id.in_(foll_games)).all()
+    else:
+        games_list = []
     return render_template('profile.html', title='Profile', games=games_list)
 
 

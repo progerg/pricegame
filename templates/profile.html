@@ -14,13 +14,15 @@
         <div class="col-sm-9 text-left">
             <a class="btn btn-primary" href="/profile_edit" role="button">EDIT PROFILE</a>
             <h2 style="padding: 10px">Following games</h2>
-            {% for game in games %}
-            <div class="col-sm-2 text-center">
-                <p style="padding: 10px"><img src="{{ game.image }}" style="width: 180px; height: 250px"/>
-                <a>{{ game.name  }}</a></p>
-                <a class="btn btn-danger" href="/unfollow/{{ game.id }}" role="button">UNFOLLOW</a>
+            <div class="row">
+                {% for game in games %}
+                <div class="col-sm-6 text-center">
+                    <p style="padding: 10px"><img src="{{ game.steam_game.header_image }}" style="width: 460px; height: 215px"/></p>
+                    <a>{{ game.steam_game.name  }}</a>
+                    <a class="btn btn-danger" href="{{ url_for('unfollow', id=game.id) }}" role="button">UNFOLLOW</a>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
 
     </div>
