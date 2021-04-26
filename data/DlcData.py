@@ -15,7 +15,7 @@ class DlcData(SqlAlchemyBase, SerializerMixin):
     final_price = sqlalchemy.Column(sqlalchemy.Integer)
     discount_percents = sqlalchemy.Column(sqlalchemy.Integer)
     header_image = sqlalchemy.Column(sqlalchemy.String)
-    game_appid = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('game.steam_appid'))
+    game_appid = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('steam_games.steam_appid'))
     metacritic = sqlalchemy.Column(sqlalchemy.JSON)
     is_free = sqlalchemy.Column(sqlalchemy.Boolean)
 

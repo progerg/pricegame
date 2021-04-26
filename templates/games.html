@@ -5,29 +5,46 @@
     {% for game in games %}
     <div class="p-2 m-3 d-flex rounded border text-light">
         <div class="d-inline ml-2">
-            <h3>{{ game.name }}</h3>
+            {% if game.steam_game %}
+                <h3>{{ game.steam_game.name }}</h3>
+            {% else %}
+                <h3>{{ game.egs_game.name }}</h3>
+            {% endif %}
             <div class="d-flex">
-                <img src="{{ game.image }}" class="rounded" height="150px">
+                {% if game.steam_game %}
+                    <img src="{{ game.steam_game.header_image }}" class="rounded" height="150px">
+                {% else %}
+                    <img src="{{ game.egs_game.image_2 }}" class="rounded" height="150px">
+                {% endif %}
                 <!-- Steam Price -->
+                {% if game.steam_game %}
                 <div class="d-inline ml-5 p-2 text-center border-right">
-                    <a class="btn btn-default text-center" href="https://store.steampowered.com/app/{{ game.appid }}">
+                    <a class="btn btn-default text-center" href="https://store.steampowered.com/app/{{ game.steam_game.steam_appid }}">
                         Buy at <img src="static/img/steam-logo.png" class="rounded shop-button" height="50px">
                     </a>
-                    <h4>Price: <small>{{ game.st_price }}</small></h4>
+                    <h4>Price: <small>{{ game.steam_game.final_price }}</small></h4>
                 </div>
+                {% endif %}
                 <!-- EGS Price -->
+                {% if game.egs_game %}
                 <div class="d-inline p-2 text-center">
-                    <a class="btn btn-default" href="https://www.epicgames.com/store/ru/">
+                    <a class="btn btn-default" href="{{ game.egs_game.url }}">
                         Buy at <img src="static/img/egs-logo.png" class="rounded shop-button" height="50px">
                     </a>
-                    <h4>Price: <small>{{ game.ep_price }}</small></h4>
+                    <h4>Price: <small>{{ game.egs_game.discPrice }}</small></h4>
                 </div>
+                {% endif %}
             </div>
         </div>
         <!-- Ratings -->
+        {% if game.steam_game %}
         <div class="border-left">
             <a class="btn btn-primary" href="/follow/{{ game.id }}" role="button" style="margin-left: 100px; padding: 20px">Follow</a>
+            {% if game.steam_game.metacritic %}
+            <a href="{{ game.steam_game.metacritic['url'] }}">Metacritic: {{ game.steam_game.metacritic['score'] }}</a>
+            {% endif %}
         </div>
+        {% endif %}
     </div>
     {% endfor %}
 </div>

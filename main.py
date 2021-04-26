@@ -1,5 +1,5 @@
 from flask_login import login_user, LoginManager, login_manager, login_required, logout_user, current_user
-from data import Game
+from data.Game import Game
 from data.db_session import *
 from data.users import User, EditForm, RegisterForm, LoginForm
 import flask
@@ -21,11 +21,11 @@ def index():
 
 @app.route('/games', methods=['GET', 'POST'])
 def games():
-    games_list = db_sess.query(Game.Game).all()
-    if 'up' == flask.request.form.get('price'):
+    games_list = db_sess.query(Game).all()[:2]
+    '''if 'up' == flask.request.form.get('price'):
         games_list = db_sess.query(Game.Game).order_by(Game.Game.st_price).all()
     else:
-        games_list = db_sess.query(Game.Game).order_by(-Game.Game.st_price).all()
+        games_list = db_sess.query(Game.Game).order_by(-Game.Game.st_price).all()'''
     return flask.render_template('games.html', games=games_list)
 
 
@@ -146,6 +146,6 @@ def profile():
 
 
 if __name__ == '__main__':
-    global_init('db/game.db')
+    global_init('db/games.db')
     db_sess = create_session()
     app.run(port=8080, host='127.0.0.1')

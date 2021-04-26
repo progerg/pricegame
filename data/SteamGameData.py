@@ -5,8 +5,8 @@ from sqlalchemy import orm
 from sqlalchemy_serializer import SerializerMixin
 
 
-class GameData(SqlAlchemyBase, SerializerMixin):
-    __tablename__ = 'game'
+class SteamGameData(SqlAlchemyBase, SerializerMixin):
+    __tablename__ = 'steam_games'
 
     id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String)
@@ -15,7 +15,7 @@ class GameData(SqlAlchemyBase, SerializerMixin):
     discount_percents = sqlalchemy.Column(sqlalchemy.Integer)
     header_image = sqlalchemy.Column(sqlalchemy.String)
     is_free = sqlalchemy.Column(sqlalchemy.Boolean)
-    steam_appid = sqlalchemy.Column(sqlalchemy.Integer)
+    steam_appid = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey('games.st_id'))
     screenshots = sqlalchemy.Column(sqlalchemy.JSON)
     metacritic = sqlalchemy.Column(sqlalchemy.JSON)
     genres = sqlalchemy.Column(sqlalchemy.String)
