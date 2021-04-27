@@ -51,11 +51,11 @@ class LoginForm(FlaskForm):
 
 class EditForm(FlaskForm):
     avatar = FileField('Avatar', validators=[
-        FileRequired(),
         FileAllowed(['jpg', 'png'], 'Images only!')])
     email = EmailField('Email', validators=[DataRequired()])
     age = StringField('Age')
     old_password = PasswordField('Old Password')
     new_password = PasswordField('New Password')
     name = StringField('New name', validators=[DataRequired()])
+    mailing = BooleanField('Mailing about following games')
     submit = SubmitField('Confirm')

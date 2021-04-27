@@ -41,7 +41,6 @@ def games(page=1):
 @login_required
 @app.route('/follow/<int:id>', methods=['GET', 'POST'])
 def follow(id):
-    print(id)
     if current_user.foll_games:
         foll_games = current_user.foll_games.split()
     else:
@@ -70,7 +69,6 @@ def follow(id):
 @login_required
 @app.route('/unfollow/<int:id>', methods=['GET', 'POST'])
 def unfollow(id):
-    print(id)
     foll_games = current_user.foll_games.split(', ')
     foll_games.remove(str(id))
     foll_games = ', '.join(foll_games)
@@ -146,13 +144,15 @@ def profile_edit():
         form.email.data = current_user.email
         form.name.data = current_user.name
     if form.validate_on_submit():
-        if current_user.check_password(form.old_password.data) or form.new_password.data == '':
+        if current_user.check_password(form.old_password.data):
             f = form.avatar.data
             current_user.name = form.name.data
             current_user.email = form.email.data
             current_user.age = form.age.data
-            current_user.password = form.new_password.data
-            current_user.profile_photo = f.read()
+            if form.new_password.data:
+                current_user.password = form.new_password.data
+            if f:
+                current_user.profile_photo = f.read()
             db_sess.merge(current_user)
             db_sess.commit()
             return redirect(url_for('profile'))

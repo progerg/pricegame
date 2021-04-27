@@ -68,6 +68,7 @@
                         </p>
                     {% endfor %}
                 </p>
+                <p>{{ form.mailing() }} {{ form.mailing.label }}</p>
                 <p>{{ form.submit(type="submit", class="mx-auto btn btn-primary") }}</p>
                 {{message}}
 
