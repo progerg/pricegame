@@ -5,7 +5,7 @@
     {% for game in games %}
     <div class="p-2 m-3 d-flex rounded border text-light">
         <div class="d-inline ml-2">
-                <h3>{{ game.name }}</h3>
+            <a href="/game/{{ game.id }}"><h3>{{ game.name }}</h3></a>
             <div class="d-flex">
                 {% if game.steam_game %}
                     <img src="{{ game.steam_game.header_image }}" class="rounded" height="150px">

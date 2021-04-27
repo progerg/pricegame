@@ -8,6 +8,7 @@ import flask
 from flask import Flask, render_template, redirect, request, url_for, flash, make_response
 from os.path import dirname, join
 from flask_caching import Cache
+from json import loads
 
 app = Flask(__name__, static_folder=join(dirname(__file__), 'static'))
 app.config['SECRET_KEY'] = 'hello'
@@ -66,9 +67,26 @@ def games(page=1):
                            page=page, first_page=first_page, last_page=last_page)
 
 
+@app.route('/game/<int:game_id>')
+def game(game_id: int):
+    game = db_sess.query(Game).filter(Game.id == game_id).first()
+    imgs = dlcs = metacritic = None
+    if game:
+        if game.steam_game:
+            if game.steam_game.screenshots:
+                imgs = loads(game.steam_game.screenshots)
+            if game.steam_game.dlc:
+                dlcs = game.steam_game.dlc
+            if game.steam_game.metacritic:
+                metacritic = loads(game.steam_game.metacritic)
+        return render_template('game.html', game=game, dlcs=dlcs, imgs=imgs, metacritic=metacritic)
+    return f'Game with id {game_id} doesn`t exists'
+
+
 @login_required
 @app.route('/follow/<int:id>', methods=['GET', 'POST'])
 def follow(id):
+    print(id)
     if current_user.foll_games:
         foll_games = current_user.foll_games.split()
     else:
@@ -97,6 +115,7 @@ def follow(id):
 @login_required
 @app.route('/unfollow/<int:id>', methods=['GET', 'POST'])
 def unfollow(id):
+    print(id)
     foll_games = current_user.foll_games.split(', ')
     foll_games.remove(str(id))
     foll_games = ', '.join(foll_games)
@@ -172,15 +191,13 @@ def profile_edit():
         form.email.data = current_user.email
         form.name.data = current_user.name
     if form.validate_on_submit():
-        if current_user.check_password(form.old_password.data):
+        if current_user.check_password(form.old_password.data) or form.new_password.data == '':
             f = form.avatar.data
             current_user.name = form.name.data
             current_user.email = form.email.data
             current_user.age = form.age.data
-            if form.new_password.data:
-                current_user.password = form.new_password.data
-            if f:
-                current_user.profile_photo = f.read()
+            current_user.password = form.new_password.data
+            current_user.profile_photo = f.read()
             db_sess.merge(current_user)
             db_sess.commit()
             return redirect(url_for('profile'))

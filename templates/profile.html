@@ -19,20 +19,6 @@
                 <div class="col-sm-6 text-center">
                     <p style="padding: 10px"><img src="{{ game.steam_game.header_image }}" style="width: 460px; height: 215px"/></p>
                     <a>{{ game.steam_game.name  }}</a>
-                    <div class="row">
-                        <div class="col-sm-6 text-center">
-                        {% if game.steam_game.is_free == 0 %}
-                            <h4>Steam: <small>{{ game.steam_game.final_price / 100 }} ₽</small></h4>
-                        {% else %}
-                            <h4>Steam: <small>Free</small></h4>
-                        {% endif %}
-                        </div>
-                        <div class="col-sm-6 text-center">
-                        {% if game.egs_game %}
-                            <h4>Epicgames: <small>{{ game.egs_game.final_price / 100 }} ₽</small></h4>
-                        {% endif  %}
-                        </div>
-                    </div>
                     <a class="btn btn-danger" href="{{ url_for('unfollow', id=game.id) }}" role="button">UNFOLLOW</a>
                 </div>
                 {% endfor %}
