@@ -16,6 +16,8 @@ class Game(SqlAlchemyBase, SerializerMixin):
     min_price = sqlalchemy.Column(sqlalchemy.Integer)
     steam_game = orm.relationship('SteamGameData', uselist=False)
     egs_game = orm.relationship('EGSGameData', uselist=False)
+    name = sqlalchemy.Column(sqlalchemy.String)
+    min_price = sqlalchemy.Column(sqlalchemy.Integer)
 
     def __init__(self, **kwargs):
         for key, val in kwargs.items():
