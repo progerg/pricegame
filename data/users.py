@@ -57,5 +57,4 @@ class EditForm(FlaskForm):
     old_password = PasswordField('Old Password')
     new_password = PasswordField('New Password')
     name = StringField('New name', validators=[DataRequired()])
-    mailing = BooleanField('Mailing about following games')
     submit = SubmitField('Confirm')
