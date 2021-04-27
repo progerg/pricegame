@@ -51,7 +51,6 @@ class LoginForm(FlaskForm):
 
 class EditForm(FlaskForm):
     avatar = FileField('Avatar', validators=[
-        FileRequired(),
         FileAllowed(['jpg', 'png'], 'Images only!')])
     email = EmailField('Email', validators=[DataRequired()])
     age = StringField('Age')

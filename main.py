@@ -7,9 +7,13 @@ from data.users import User, EditForm, RegisterForm, LoginForm
 import flask
 from flask import Flask, render_template, redirect, request, url_for, flash, make_response
 from os.path import dirname, join
+from flask_caching import Cache
 
 app = Flask(__name__, static_folder=join(dirname(__file__), 'static'))
 app.config['SECRET_KEY'] = 'hello'
+
+cache = Cache(config={"CACHE_TYPE": "SimpleCache", "CACHE_DEFAULT_TIMEOUT": 60})
+cache.init_app(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -22,26 +26,40 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/games')
-@app.route('/games/<int:page>')
+@app.route('/games', methods=['GET', 'POST'])
+@app.route('/games/<int:page>', methods=['GET', 'POST'])
 def games(page=1):
-    games_list = db_sess.query(Game).filter(Game.id < 25).all()
+    query = db_sess.query(Game)
+    if flask.request.method == 'POST':
+        cache.set('name', flask.request.form.get('name'))
+        if flask.request.form.get('price') == 'up':
+            cache.set('price_up', True)
+        else:
+            cache.set('price_up', False)
+        return redirect('/games')
+
+    if cache.get('name'):
+        name = cache.get('name')
+        query = query.filter(Game.name.like(f'%{name}%'))
+
+    len_games_list = query.count()
     if page <= 0:
-        return redirect('/games/1')
-    elif page > len(games_list) // 25 + 1:
-        page = len(games_list) // 25 + 1
+        return redirect('/games')
+    elif page > len_games_list // 15 + 1:
+        page = len_games_list // 15 + 1
         return redirect(f'/games/{page}')
-    try:
-        games_list = games_list[25 * (page - 1):25 * page]
-    except IndexError:
-        games_list = games_list[25 * (page - 1):]
-    return render_template('games.html', games=games_list)
+
+    if cache.get('price_up'):
+        games_list = list(query.order_by(Game.min_price).limit(15).offset(15 * (page - 1)))
+    else:
+        games_list = list(query.order_by(-Game.min_price).limit(15).offset(15 * (page - 1)))
+    return render_template('games.html', games=games_list, price_up=cache.get('price_up'), name=cache.get('name'),
+                           page=page)
 
 
 @login_required
 @app.route('/follow/<int:id>', methods=['GET', 'POST'])
 def follow(id):
-    print(id)
     if current_user.foll_games:
         foll_games = current_user.foll_games.split()
     else:
@@ -70,7 +88,6 @@ def follow(id):
 @login_required
 @app.route('/unfollow/<int:id>', methods=['GET', 'POST'])
 def unfollow(id):
-    print(id)
     foll_games = current_user.foll_games.split(', ')
     foll_games.remove(str(id))
     foll_games = ', '.join(foll_games)
@@ -146,13 +163,15 @@ def profile_edit():
         form.email.data = current_user.email
         form.name.data = current_user.name
     if form.validate_on_submit():
-        if current_user.check_password(form.old_password.data) or form.new_password.data == '':
+        if current_user.check_password(form.old_password.data):
             f = form.avatar.data
             current_user.name = form.name.data
             current_user.email = form.email.data
             current_user.age = form.age.data
-            current_user.password = form.new_password.data
-            current_user.profile_photo = f.read()
+            if form.new_password.data:
+                current_user.password = form.new_password.data
+            if f:
+                current_user.profile_photo = f.read()
             db_sess.merge(current_user)
             db_sess.commit()
             return redirect(url_for('profile'))
