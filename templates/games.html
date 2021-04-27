@@ -23,7 +23,7 @@
                         Buy at <img src="{{ url_for('static', filename='img/steam-logo.png') }}" class="rounded shop-button" height="50px">
                     </a>
                     {% if game.steam_game.is_free == 0 %}
-                        <h4>Price: <small>{{ game.steam_game.final_price / 100 }} руб.</small></h4>
+                        <h4>Price: <small>{{ game.steam_game.final_price / 100 }} ₽</small></h4>
                     {% else %}
                         <h4>Price: <small>Free</small></h4>
                     {% endif %}
@@ -35,7 +35,7 @@
                     <a class="btn btn-default" href="{{ game.egs_game.url }}">
                         Buy at <img src="{{ url_for('static', filename='img/egs-logo.png') }}" class="rounded shop-button" height="50px">
                     </a>
-                    <h4>Price: <small>{{ game.egs_game.final_price / 100 }} руб.</small></h4>
+                    <h4>Price: <small>{{ game.egs_game.final_price / 100 }} ₽</small></h4>
                 </div>
                 {% endif %}
             </div>
