@@ -20,15 +20,19 @@ login_manager.init_app(app)
 login_manager.login_message = 'Авторизуйтесь для доступа к закрытым страницам'
 
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 def index():
+    if flask.request.method == 'POST':
+        cache.set('name', flask.request.form.get('game_name'))
+        return redirect('/games')
     return render_template('index.html')
 
 
 @app.route('/games', methods=['GET', 'POST'])
 @app.route('/games/<int:page>', methods=['GET', 'POST'])
 def games(page=1):
+    last_page = first_page = False
     query = db_sess.query(Game)
     if flask.request.method == 'POST':
         cache.set('name', flask.request.form.get('name'))
@@ -43,18 +47,23 @@ def games(page=1):
         query = query.filter(Game.name.like(f'%{name}%'))
 
     len_games_list = query.count()
+
     if page <= 0:
         return redirect('/games')
     elif page > len_games_list // 15 + 1:
         page = len_games_list // 15 + 1
         return redirect(f'/games/{page}')
+    elif page == 1:
+        first_page = True
+    elif page == len_games_list // 15 + 1:
+        last_page = True
 
     if cache.get('price_up'):
         games_list = list(query.order_by(Game.min_price).limit(15).offset(15 * (page - 1)))
     else:
         games_list = list(query.order_by(-Game.min_price).limit(15).offset(15 * (page - 1)))
     return render_template('games.html', games=games_list, price_up=cache.get('price_up'), name=cache.get('name'),
-                           page=page)
+                           page=page, first_page=first_page, last_page=last_page)
 
 
 @login_required

@@ -77,8 +77,12 @@
         </nav>
 </div>
 <div class="d-flex m-3">
+    {% if not first_page %}
     <a href="/games/{{ page - 1 }}">Previous</a>
+    {% endif %}
     <p></p>
+    {% if not last_page %}
     <a href="/games/{{ page + 1 }}">Next</a>
+    {% endif %}
 </div>
 {% endblock %}
