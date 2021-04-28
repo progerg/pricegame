@@ -174,7 +174,8 @@ def reqister():
         user = User(
             name=form.name.data,
             email=form.email.data,
-            age=form.age.data
+            age=form.age.data,
+            profile_photo=open('static/img/no_avatar.png', 'rb').read()
         )
         user.set_password(form.password.data)
         db_sess.add(user)
@@ -204,6 +205,11 @@ def profile_edit():
         flash('Неправильный пароль')
         return render_template('profile_edit.html', title='Edit Profile', form=form)
     return render_template('profile_edit.html', title='Edit Profile', form=form)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html')
 
 
 @app.route('/user_avatar/id<int:id>')

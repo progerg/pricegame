@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="m-3">
+{% if game.steam_game %}
+        <a href="https://store.steampowered.com/app/{{ game.steam_game.steam_appid }}"><h3>{{ game.name }}</h3></a>
+        {% else %}
+        <a href="{{ game.egs_game.url }}"><h3>{{ game.name }}</h3></a>
+        {% endif %}
+</div>
+<div class="d-flex m-3">
+    <div>
+        {% if game.steam_game %}
+        <img src="{{ game.steam_game.header_image }}" class="rounded" height="150px">
+        {% if metacritic %}
+        <a href="{{ metacritic['url'] }}">Metacritic: {{ metacritic['score'] }}</a>
+        {% endif %}
+        {% else %}
+        <img src="{{ game.egs_game.image_2 }}" class="rounded" height="150px">
+        {% endif %}
+    </div>
+    <p></p>
+    <div id="carouselExampleIndicators" class="carousel slide m-3">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+        <div class="d-inline">
+      {% if dlcs %}
+        {% for dlc in dlcs %}
+            <a href="https://store.steampowered.com/app/{{ dlc.steam_appid }}"><h3>{{ dlc.name }}</h3></a>
+            <img src="{{ dlc.header_image }}" class="rounded" height="150px">
+        {% endfor %}
+      {% else %}
+        <h3>Game has not dlc</h3>
+        {% endif %}
+    </div>
+    </div>
+    <div class="carousel-item">
+        <div class="d-inline">
+        {% if imgs %}
+            {% for img in imgs %}
+                <img src="{{ img['path_thumbnail'] }}" class="rounded" height="150px">
+            {% endfor %}
+        {% endif %}
+        </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}
