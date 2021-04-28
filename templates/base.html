@@ -57,8 +57,6 @@
     <div class="menu">
       <a class="py-2 d-none d-md-inline-block" href="/">MAIN</a>
       <a class="py-2 d-none d-md-inline-block" href="/games">GAMES</a>
-      <a class="py-2 d-none d-md-inline-block" href="#">ABOUT</a>
-      <a class="py-2 d-none d-md-inline-block" href="#">BLOG</a>
       {% if current_user.is_authenticated %}
         <a class="py-2 d-none d-md-inline-block" href="/profile">PROFILE</a>
         <a class="py-2 d-none d-md-inline-block" href="/logout">LOGOUT</a>
@@ -79,49 +77,14 @@
   <div class="row">
     <div class="col-12 col-md">
       <img src="{{ url_for('static', filename='img/Vector.svg') }}" alt="logo">
-      <small class="d-block mb-3 text-muted">&copy; 2017-2020</small>
-    </div>
-    <div class="col-6 col-md">
-      <h5>Top Games</h5>
-      <ul class="list-unstyled text-small">
-        <li><a class="text-muted" href="#">Recommended</a></li>
-        <li><a class="text-muted" href="#">Best plot</a></li>
-        <li><a class="text-muted" href="#">Best graphics</a></li>
-        <li><a class="text-muted" href="#">Best Studios</a></li>
-      </ul>
-    </div>
-    <div class="col-6 col-md">
-      <h5>For developers</h5>
-      <ul class="list-unstyled text-small">
-        <li><a class="text-muted" href="#">Promotion</a></li>
-        <li><a class="text-muted" href="#">Accommodation</a></li>
-        <li><a class="text-muted" href="#">Prices</a></li>
-        <li><a class="text-muted" href="#">Contacts</a></li>
-      </ul>
-    </div>
-    <div class="col-6 col-md">
-      <h5>Blog</h5>
-      <ul class="list-unstyled text-small">
-        <li><a class="text-muted" href="#">News</a></li>
-        <li><a class="text-muted" href="#">New features</a></li>
-        <li><a class="text-muted" href="#">Reviews</a></li>
-      </ul>
-    </div>
-    <div class="col-6 col-md">
-      <h5>About</h5>
-      <ul class="list-unstyled text-small">
-        <li><a class="text-muted" href="#">Team</a></li>
-        <li><a class="text-muted" href="#">Privacy</a></li>
-        <li><a class="text-muted" href="#">Terms</a></li>
-      </ul>
+      <small class="d-block mb-3 text-muted">&copy; 2021</small>
     </div>
     <div class="col-6 col-md">
       <h5>Menu</h5>
       <ul class="list-unstyled text-small">
         <li><a class="text-muted" href="/games">Games</a></li>
-        <li><a class="text-muted" href="#">Blog</a></li>
-        <li><a class="text-muted" href="#">Profile</a></li>
-        <li><a class="text-muted" href="#">About</a></li>
+        <li><a class="text-muted" href="
+  {% if current_user.is_authenticated %}/profile{% else %}/register{% endif %}">Profile</a></li>
         <li><a class="text-muted" href="/">Main</a></li>
       </ul>
     </div>
