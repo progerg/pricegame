@@ -206,6 +206,7 @@ def profile_edit():
         return render_template('profile_edit.html', title='Edit Profile', form=form)
     return render_template('profile_edit.html', title='Edit Profile', form=form)
 
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html')
