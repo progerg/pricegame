@@ -1,21 +1,44 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="m-3">
-{% if game.steam_game %}
-        <a href="https://store.steampowered.com/app/{{ game.steam_game.steam_appid }}"><h3>{{ game.name }}</h3></a>
-        {% else %}
-        <a href="{{ game.egs_game.url }}"><h3>{{ game.name }}</h3></a>
-        {% endif %}
+    <h3>{{ game.name }}</h3>
+
 </div>
 <div class="d-flex m-3">
-    <div>
+    <div class="d-inline">
         {% if game.steam_game %}
-        <img src="{{ game.steam_game.header_image }}" class="rounded" height="150px">
+        <p><img src="{{ game.steam_game.header_image }}" class="rounded" height="150px"></p>
         {% if metacritic %}
         <a href="{{ metacritic['url'] }}">Metacritic: {{ metacritic['score'] }}</a>
         {% endif %}
         {% else %}
         <img src="{{ game.egs_game.image_2 }}" class="rounded" height="150px">
+        {% endif %}
+        <p></p>
+        {% if game.steam_game %}
+                <div class="d-inline ml-5 p-2 text-center">
+                    <a class="btn btn-default text-center" href="https://store.steampowered.com/app/{{ game.steam_game.steam_appid }}">
+                        Buy at <img src="{{ url_for('static', filename='img/steam-logo.png') }}" class="rounded shop-button" height="50px">
+                    </a>
+                    {% if game.steam_game.is_free == 0 %}
+                        <h4>Price: <small>{{ game.steam_game.final_price / 100 }} ₽</small></h4>
+                    {% else %}
+                        <h4>Price: <small>Free</small></h4>
+                    {% endif %}
+                </div>
+                {% endif %}
+        <p></p>
+        {% if game.egs_game %}
+                <div class="d-inline p-2 text-center">
+                    <a class="btn btn-default" href="{{ game.egs_game.url }}">
+                        Buy at <img src="{{ url_for('static', filename='img/egs-logo.png') }}" class="rounded shop-button" height="50px">
+                    </a>
+                    {% if game.egs_game.final_price > 0 %}
+                    <h4>Price: <small>{{ game.egs_game.final_price / 100 }} ₽</small></h4>
+                    {% else %}
+                    <h4>Price: <small>Free</small></h4>
+                    {% endif %}
+                </div>
         {% endif %}
     </div>
     <p></p>
@@ -31,6 +54,11 @@
         {% for dlc in dlcs %}
             <a href="https://store.steampowered.com/app/{{ dlc.steam_appid }}"><h3>{{ dlc.name }}</h3></a>
             <img src="{{ dlc.header_image }}" class="rounded" height="150px">
+            {% if dlc.is_free == 0 %}
+            <h5>Price: {{ dlc.final_price / 100 }} руб.</h5>
+            {% else %}
+            <h5>Price: Free</h5>
+            {% endif %}
         {% endfor %}
       {% else %}
         <h3>Game has not dlc</h3>

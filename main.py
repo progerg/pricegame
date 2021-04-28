@@ -1,4 +1,4 @@
-from flask_login import login_user, LoginManager, login_manager, login_required, logout_user, current_user
+from flask_login import login_user, LoginManager, login_manager, login_required, logout_user, current_user, mixins
 from data.Game import Game
 from data.EGSGameData import EGSGameData
 from data.SteamGameData import SteamGameData
@@ -12,7 +12,6 @@ from json import loads
 
 app = Flask(__name__, static_folder=join(dirname(__file__), 'static'))
 app.config['SECRET_KEY'] = 'hello'
-
 cache = Cache(config={"CACHE_TYPE": "SimpleCache", "CACHE_DEFAULT_TIMEOUT": 60})
 cache.init_app(app)
 
@@ -54,9 +53,10 @@ def games(page=1):
     elif page > len_games_list // 15 + 1:
         page = len_games_list // 15 + 1
         return redirect(f'/games/{page}')
-    elif page == 1:
+    if page == 1:
         first_page = True
-    elif page == len_games_list // 15 + 1:
+    if page == len_games_list // 15 + 1 and len_games_list % 15 > 0\
+            or page == len_games_list // 15 and len_games_list % 15 == 0:
         last_page = True
 
     if cache.get('price_up'):
@@ -86,52 +86,54 @@ def game(game_id: int):
 @login_required
 @app.route('/follow/<int:id>', methods=['GET', 'POST'])
 def follow(id):
-    print(id)
-    if current_user.foll_games:
-        foll_games = current_user.foll_games.split()
-    else:
-        foll_games = []
-    print(foll_games)
-    if foll_games and str(id) not in foll_games:
-        current_user.foll_games = f'{current_user.foll_games}, {id}'
-    elif str(id) in foll_games:
-        flash('You are already following this game')
-    else:
-        current_user.foll_games = f'{id}'
-    game = db_sess.query(Game).filter(Game.id == id).first()
-    if game.foll_profiles:
-        profiles = game.foll_profiles.split()
-    else:
-        profiles = []
-    if profiles and str(current_user.id) not in profiles:
-        game.foll_profiles = f'{game.foll_profiles}, {current_user.id}'
-    else:
-        game.foll_profiles = f'{current_user.id}'
-    db_sess.merge(current_user)
-    db_sess.commit()
-    return redirect(url_for('games'))
+    if current_user.is_authenticated:
+        print(id)
+        if current_user.foll_games:
+            foll_games = current_user.foll_games.split()
+        else:
+            foll_games = []
+        print(foll_games)
+        if foll_games and str(id) not in foll_games:
+            current_user.foll_games = f'{current_user.foll_games}, {id}'
+        elif str(id) in foll_games:
+            flash('You are already following this game')
+        else:
+            current_user.foll_games = f'{id}'
+        game = db_sess.query(Game).filter(Game.id == id).first()
+        if game.foll_profiles:
+            profiles = game.foll_profiles.split()
+        else:
+            profiles = []
+        if profiles and str(current_user.id) not in profiles:
+            game.foll_profiles = f'{game.foll_profiles}, {current_user.id}'
+        else:
+            game.foll_profiles = f'{current_user.id}'
+        db_sess.merge(current_user)
+        db_sess.commit()
+        return redirect(url_for('games'))
+    return redirect('/register')
 
 
 @login_required
 @app.route('/unfollow/<int:id>', methods=['GET', 'POST'])
 def unfollow(id):
-    print(id)
-    foll_games = current_user.foll_games.split(', ')
-    foll_games.remove(str(id))
-    foll_games = ', '.join(foll_games)
-    current_user.foll_games = foll_games
-    game = db_sess.query(Game).filter(Game.id == id).first()
-    profiles = game.foll_profiles.split(', ')
-    profiles.remove(str(current_user.id))
-    game.foll_profiles = ', '.join(profiles)
-    db_sess.merge(current_user)
-    db_sess.commit()
-    return redirect(url_for('profile'))
+    if current_user.is_authenticated:
+        foll_games = current_user.foll_games.split(', ')
+        foll_games.remove(str(id))
+        foll_games = ', '.join(foll_games)
+        current_user.foll_games = foll_games
+        game = db_sess.query(Game).filter(Game.id == id).first()
+        profiles = game.foll_profiles.split(', ')
+        profiles.remove(str(current_user.id))
+        game.foll_profiles = ', '.join(profiles)
+        db_sess.merge(current_user)
+        db_sess.commit()
+        return redirect(url_for('profile'))
+    return redirect('/register')
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    db_sess = create_session()
     return db_sess.query(User).get(user_id)
 
 
@@ -146,8 +148,6 @@ def logout():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        global_init('db/game.db')
-        db_sess = create_session()
         user = db_sess.query(User).filter(User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
@@ -166,7 +166,6 @@ def reqister():
             return render_template('register.html', title='Регистрация',
                                    form=form,
                                    message="Пароли не совпадают")
-        db_sess = create_session()
         if db_sess.query(User).filter(User.email == form.email.data).first():
             return render_template('register.html', title='Регистрация',
                                    form=form,
@@ -215,7 +214,6 @@ def page_not_found(e):
 @app.route('/user_avatar/id<int:id>')
 @login_required
 def user_avatar(id):
-    db_sess = create_session()
     img = db_sess.query(User).filter(User.id == id).first().profile_photo
     if not img:
         return ""

@@ -16,7 +16,7 @@ def get_slug(title: str) -> str:
 
 
 def main() -> None:
-    global_init(f'C:/Users/Comp/Desktop/ProjectWeb/db/games.db')
+    global_init(f'/db/games.db')
     db_sess = create_session()
     egs_games = list(map(lambda x: x.to_dict(), db_sess.query(EGSGameData).all()))
     egs_games_dict = {}
